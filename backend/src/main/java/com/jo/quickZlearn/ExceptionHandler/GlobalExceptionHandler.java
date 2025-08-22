@@ -1,5 +1,6 @@
-package com.jo.quickZlearn.roadmap.exceptions;
+package com.jo.quickZlearn.ExceptionHandler;
 
+import com.jo.quickZlearn.roadmap.exceptions.RoadmapNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

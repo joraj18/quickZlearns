@@ -1,4 +1,4 @@
-package com.jo.quickZlearn.roadmap.exceptions;
+package com.jo.quickZlearn.ExceptionHandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

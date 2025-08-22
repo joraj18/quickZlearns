@@ -4,6 +4,8 @@ import com.jo.quickZlearn.Auth.config.JwtUtil;
 import com.jo.quickZlearn.Auth.dto.LoginRequest;
 import com.jo.quickZlearn.Auth.dto.RegisterRequest;
 import com.jo.quickZlearn.Auth.entity.Users;
+import com.jo.quickZlearn.Auth.exceptions.InvalidCredentialsException;
+import com.jo.quickZlearn.Auth.exceptions.MailIdAlreadyRegistered;
 import com.jo.quickZlearn.Auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +29,7 @@ public class AuthService {
 
     public void register(RegisterRequest request) {
         if(userRepo.findByEmail(request.getEmail()).isPresent()){
-            throw new RuntimeException("Email already in use");
+            throw new MailIdAlreadyRegistered("Email id already Registered");
         }
 
         Users users = new Users();
@@ -41,7 +43,7 @@ public class AuthService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
 
         if (!passwordEncoder.matches(request.getPassword(), userDetails.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+            throw new InvalidCredentialsException("Invalid credentials");
         }
 
         return jwtUtil.generateToken(userDetails);
