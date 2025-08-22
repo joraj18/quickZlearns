@@ -49,9 +49,6 @@ public class RoadmapController {
 
     @DeleteMapping("/{roadmapId}")
     public ResponseEntity<String> deleteRoadmap(@PathVariable long roadmapId, @AuthenticationPrincipal UserDetails userDetails){
-        System.out.println("==== Delete endpoint hit ====");
-        System.out.println("Authenticated user email: " + userDetails.getUsername());
-        System.out.println("Requested roadmapId: " + roadmapId);
         roadmapService.deleteRoadmap(roadmapId, userDetails.getUsername());
         return ResponseEntity.ok("Roadmap deleted successfully");
     }

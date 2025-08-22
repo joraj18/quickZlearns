@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UpvoteService {
 
@@ -25,11 +27,10 @@ public class UpvoteService {
                 .orElseThrow(() -> new RuntimeException("Roadmap not found with id: " + roadmapId))
                 .getId();
 
-        if(upvoteRepository.findByUserIdAndRoadmapId(userId, roadmapId).isPresent()){ //remove upvote
+        Optional<Upvote> userUpvote=upvoteRepository.findByUserIdAndRoadmapId(userId, roadmapId);
+        if(userUpvote.isPresent()){ //remove upvote
             //delete the upvote record
-            Upvote upvote= upvoteRepository.findByUserIdAndRoadmapId(userId, roadmapId)
-                    .orElseThrow(() -> new RuntimeException("Some error occurred  "));
-            upvoteRepository.delete(upvote);
+            upvoteRepository.delete(userUpvote.get());
 
             //decrement roadmap upvote count
             Roadmap roadmap = roadmapRepository.findById(roadmapId)

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name="upvote")
+@Table(name="upvote", uniqueConstraints = @UniqueConstraint(columnNames = {"userId, roadmapId"}))
 public class Upvote {
 
     @Id

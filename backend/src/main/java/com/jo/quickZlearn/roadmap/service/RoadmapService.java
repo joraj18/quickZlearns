@@ -8,6 +8,7 @@ import com.jo.quickZlearn.roadmap.dto.RoadmapStepRequest;
 import com.jo.quickZlearn.roadmap.dto.RoadmapStepResponse;
 import com.jo.quickZlearn.roadmap.entity.Roadmap;
 import com.jo.quickZlearn.roadmap.entity.RoadmapStep;
+import com.jo.quickZlearn.roadmap.exceptions.RoadmapNotFoundException;
 import com.jo.quickZlearn.roadmap.repository.RoadmapRepository;
 import com.jo.quickZlearn.roadmap.repository.RoadmapStepRepository;
 import jakarta.transaction.Transactional;
@@ -95,8 +96,9 @@ public class RoadmapService {
 
     //return roadmap content
     public List<RoadmapStepResponse>getRoadmapContent(long roadmapId){
+        System.out.println("Entered getRoadmapContent");
         Optional<Roadmap> optionalRoadmap= roadmapRepo.findById(roadmapId);
-        Roadmap roadmap= optionalRoadmap.orElseThrow(() -> new NoSuchElementException("Not found"));
+        Roadmap roadmap= optionalRoadmap.orElseThrow(() -> new RoadmapNotFoundException("No such roadmap found"));
 
         List<RoadmapStep> stepList = roadmapStepRepo.findByRoadmap(roadmap);
         return stepList.stream()
@@ -113,7 +115,7 @@ public class RoadmapService {
     @Transactional
     public void deleteRoadmap(Long id, String email){
         Optional<Roadmap> optionalRoadmap= roadmapRepo.findById(id);
-        Roadmap roadmap= optionalRoadmap.orElseThrow(() -> new NoSuchElementException("Not found"));
+        Roadmap roadmap= optionalRoadmap.orElseThrow(() -> new RoadmapNotFoundException("Not found"));
 
         System.out.println("email inside table: "+roadmap.getCreatedBy().getEmail());
         System.out.println("email in argument: "+email);
