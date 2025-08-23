@@ -1,4 +1,4 @@
-package com.jo.quickZlearn.Auth.config;
+package com.jo.quickZlearn.auth.config;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

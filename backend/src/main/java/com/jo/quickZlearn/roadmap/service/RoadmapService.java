@@ -1,25 +1,30 @@
 package com.jo.quickZlearn.roadmap.service;
 
-import com.jo.quickZlearn.Auth.entity.Users;
-import com.jo.quickZlearn.Auth.repository.UserRepository;
+import com.jo.quickZlearn.auth.entity.Users;
+import com.jo.quickZlearn.auth.repository.UserRepository;
 import com.jo.quickZlearn.roadmap.dto.RoadmapRequest;
 import com.jo.quickZlearn.roadmap.dto.RoadmapResponse;
-import com.jo.quickZlearn.roadmap.dto.RoadmapStepRequest;
 import com.jo.quickZlearn.roadmap.dto.RoadmapStepResponse;
 import com.jo.quickZlearn.roadmap.entity.Roadmap;
 import com.jo.quickZlearn.roadmap.entity.RoadmapStep;
 import com.jo.quickZlearn.roadmap.exceptions.RoadmapNotFoundException;
 import com.jo.quickZlearn.roadmap.repository.RoadmapRepository;
 import com.jo.quickZlearn.roadmap.repository.RoadmapStepRepository;
+import com.jo.quickZlearn.searchfeature.entity.FailedElasticSearchSync;
+import com.jo.quickZlearn.searchfeature.entity.OperationStatus;
+import com.jo.quickZlearn.searchfeature.entity.RoadmapDocument;
+import com.jo.quickZlearn.searchfeature.entity.SyncStatus;
+import com.jo.quickZlearn.searchfeature.repository.FailedElasticSearchSyncRepository;
+import com.jo.quickZlearn.searchfeature.repository.RoadmapSearchRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,10 +35,16 @@ public class RoadmapService {
     private UserRepository userRepo;
 
     @Autowired
-    private RoadmapRepository roadmapRepo;
+    private RoadmapRepository roadmapRepository;
 
     @Autowired
-    private RoadmapStepRepository roadmapStepRepo;
+    private RoadmapStepRepository roadmapStepRepository;
+
+    @Autowired
+    private RoadmapSearchRepository roadmapSearchRepository;
+
+    @Autowired
+    private FailedElasticSearchSyncRepository failedElasticSearchSyncRepository;
 
     //create roadmap
     public Roadmap createRoadmap(RoadmapRequest request, String email) {
@@ -41,7 +52,6 @@ public class RoadmapService {
 
         Roadmap roadmap= new Roadmap();
         roadmap.setCreatedBy(user);
-
         roadmap.setTitle(request.getTitle());
         roadmap.setDescription(request.getDescription());
         roadmap.setUpvote(0);
@@ -55,21 +65,43 @@ public class RoadmapService {
             step.setRoadmap(roadmap);  // important for reverse mapping
             return step;
         }).collect(Collectors.toList());
-
         roadmap.setSteps(steps);
-        return roadmapRepo.save(roadmap);
+
+        Roadmap savedRoadmap= roadmapRepository.save(roadmap);
+
+        //create a doc in RoadmapDocument (for ES)
+        try{
+            RoadmapDocument doc= new RoadmapDocument(
+                    savedRoadmap.getId()+"",
+                    savedRoadmap.getTitle(),
+                    savedRoadmap.getDescription()
+            );
+            roadmapSearchRepository.save(doc);
+        }
+        catch(Exception e){
+            FailedElasticSearchSync failedSynRoadmap= new FailedElasticSearchSync(
+                    null,
+                    savedRoadmap.getId(),
+                    OperationStatus.ADD,
+                    LocalDateTime.now(),
+                    SyncStatus.FAILED
+            );
+            failedElasticSearchSyncRepository.save(failedSynRoadmap);
+            System.out.println("Doc failed to sync:" + e.getMessage());
+        }
+        return savedRoadmap;
     }
 
 
     //return all roadmap
     public List<RoadmapResponse>viewAllRoadmap(){
-        List<Roadmap> allRoadmaps = roadmapRepo.findAll();
+        List<Roadmap> allRoadmaps = roadmapRepository.findAll();
 
         return allRoadmaps.stream().map(roadmap -> new RoadmapResponse(
                 roadmap.getId(),
                 roadmap.getTitle(),
                 roadmap.getDescription(),
-                (int) roadmap.getUpvote(), // cast long to int if needed
+                (int) roadmap.getUpvote(),
                 roadmap.getCreatedBy().getUsername()
         )).collect(Collectors.toList());
     }
@@ -82,7 +114,7 @@ public class RoadmapService {
             return new ArrayList<>();
         }
         Users actualUser= user.get();
-        List<Roadmap> myRoadmaps= roadmapRepo.findByCreatedBy(actualUser);
+        List<Roadmap> myRoadmaps= roadmapRepository.findByCreatedBy(actualUser);
         return myRoadmaps.stream()
                 .map(roadmap -> new RoadmapResponse(
                         roadmap.getId(),
@@ -97,10 +129,10 @@ public class RoadmapService {
     //return roadmap content
     public List<RoadmapStepResponse>getRoadmapContent(long roadmapId){
         System.out.println("Entered getRoadmapContent");
-        Optional<Roadmap> optionalRoadmap= roadmapRepo.findById(roadmapId);
+        Optional<Roadmap> optionalRoadmap= roadmapRepository.findById(roadmapId);
         Roadmap roadmap= optionalRoadmap.orElseThrow(() -> new RoadmapNotFoundException("No such roadmap found"));
 
-        List<RoadmapStep> stepList = roadmapStepRepo.findByRoadmap(roadmap);
+        List<RoadmapStep> stepList = roadmapStepRepository.findByRoadmap(roadmap);
         return stepList.stream()
                 .map(step -> new RoadmapStepResponse(
                         step.getStepNo(),
@@ -114,7 +146,7 @@ public class RoadmapService {
     //delete roadmap
     @Transactional
     public void deleteRoadmap(Long id, String email){
-        Optional<Roadmap> optionalRoadmap= roadmapRepo.findById(id);
+        Optional<Roadmap> optionalRoadmap= roadmapRepository.findById(id);
         Roadmap roadmap= optionalRoadmap.orElseThrow(() -> new RoadmapNotFoundException("Not found"));
 
         System.out.println("email inside table: "+roadmap.getCreatedBy().getEmail());
@@ -126,7 +158,7 @@ public class RoadmapService {
 
         try {
             System.out.println("inside try block");
-            roadmapRepo.delete(roadmap);
+            roadmapRepository.delete(roadmap);
             System.out.println("deleted successfully");
         }
         catch (Exception e) {

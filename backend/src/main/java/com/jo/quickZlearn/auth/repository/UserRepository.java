@@ -1,6 +1,6 @@
-package com.jo.quickZlearn.Auth.repository;
+package com.jo.quickZlearn.auth.repository;
 
-import com.jo.quickZlearn.Auth.entity.Users;
+import com.jo.quickZlearn.auth.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

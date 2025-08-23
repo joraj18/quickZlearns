@@ -1,9 +1,9 @@
-package com.jo.quickZlearn.Auth.controller;
+package com.jo.quickZlearn.auth.controller;
 
-import com.jo.quickZlearn.Auth.dto.AuthResponse;
-import com.jo.quickZlearn.Auth.dto.LoginRequest;
-import com.jo.quickZlearn.Auth.dto.RegisterRequest;
-import com.jo.quickZlearn.Auth.service.AuthService;
+import com.jo.quickZlearn.auth.dto.AuthResponse;
+import com.jo.quickZlearn.auth.dto.LoginRequest;
+import com.jo.quickZlearn.auth.dto.RegisterRequest;
+import com.jo.quickZlearn.auth.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

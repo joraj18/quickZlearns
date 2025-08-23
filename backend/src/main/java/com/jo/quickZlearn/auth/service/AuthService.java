@@ -1,12 +1,12 @@
-package com.jo.quickZlearn.Auth.service;
+package com.jo.quickZlearn.auth.service;
 
-import com.jo.quickZlearn.Auth.config.JwtUtil;
-import com.jo.quickZlearn.Auth.dto.LoginRequest;
-import com.jo.quickZlearn.Auth.dto.RegisterRequest;
-import com.jo.quickZlearn.Auth.entity.Users;
-import com.jo.quickZlearn.Auth.exceptions.InvalidCredentialsException;
-import com.jo.quickZlearn.Auth.exceptions.MailIdAlreadyRegistered;
-import com.jo.quickZlearn.Auth.repository.UserRepository;
+import com.jo.quickZlearn.auth.config.JwtUtil;
+import com.jo.quickZlearn.auth.dto.LoginRequest;
+import com.jo.quickZlearn.auth.dto.RegisterRequest;
+import com.jo.quickZlearn.auth.entity.Users;
+import com.jo.quickZlearn.auth.exceptions.InvalidCredentialsException;
+import com.jo.quickZlearn.auth.exceptions.MailIdAlreadyRegistered;
+import com.jo.quickZlearn.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;

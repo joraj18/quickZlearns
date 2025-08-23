@@ -1,6 +1,6 @@
-package com.jo.quickZlearn.Auth.config;
+package com.jo.quickZlearn.auth.config;
 
-import com.jo.quickZlearn.Auth.service.UserDetailsServiceImpl;
+import com.jo.quickZlearn.auth.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

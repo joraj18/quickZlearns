@@ -1,6 +1,6 @@
 package com.jo.quickZlearn.roadmap.entity;
 
-import com.jo.quickZlearn.Auth.entity.Users;
+import com.jo.quickZlearn.auth.entity.Users;
 import jakarta.persistence.*;
 import lombok.Data;
 

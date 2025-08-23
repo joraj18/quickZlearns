@@ -1,7 +1,7 @@
-package com.jo.quickZlearn.Auth.service;
+package com.jo.quickZlearn.auth.service;
 
-import com.jo.quickZlearn.Auth.entity.Users;
-import com.jo.quickZlearn.Auth.repository.UserRepository;
+import com.jo.quickZlearn.auth.entity.Users;
+import com.jo.quickZlearn.auth.repository.UserRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

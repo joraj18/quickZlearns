@@ -1,6 +1,6 @@
 package com.jo.quickZlearn.roadmap.service;
 
-import com.jo.quickZlearn.Auth.repository.UserRepository;
+import com.jo.quickZlearn.auth.repository.UserRepository;
 import com.jo.quickZlearn.roadmap.entity.Roadmap;
 import com.jo.quickZlearn.roadmap.entity.Upvote;
 import com.jo.quickZlearn.roadmap.repository.RoadmapRepository;

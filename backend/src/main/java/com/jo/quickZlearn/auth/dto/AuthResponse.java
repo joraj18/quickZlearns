@@ -1,4 +1,4 @@
-package com.jo.quickZlearn.Auth.dto;
+package com.jo.quickZlearn.auth.dto;
 
 import lombok.Data;
 

@@ -1,6 +1,6 @@
 package com.jo.quickZlearn.roadmap.repository;
 
-import com.jo.quickZlearn.Auth.entity.Users;
+import com.jo.quickZlearn.auth.entity.Users;
 import com.jo.quickZlearn.roadmap.entity.Roadmap;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;

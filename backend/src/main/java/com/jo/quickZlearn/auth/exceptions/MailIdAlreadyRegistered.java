@@ -1,4 +1,4 @@
-package com.jo.quickZlearn.Auth.exceptions;
+package com.jo.quickZlearn.auth.exceptions;
 
 
 public class MailIdAlreadyRegistered extends RuntimeException{

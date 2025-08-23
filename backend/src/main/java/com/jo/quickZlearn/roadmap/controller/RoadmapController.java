@@ -1,11 +1,9 @@
 package com.jo.quickZlearn.roadmap.controller;
 
-import com.jo.quickZlearn.Auth.entity.Users;
 import com.jo.quickZlearn.roadmap.dto.RoadmapRequest;
 import com.jo.quickZlearn.roadmap.dto.RoadmapResponse;
 import com.jo.quickZlearn.roadmap.dto.RoadmapStepResponse;
 import com.jo.quickZlearn.roadmap.entity.Roadmap;
-import com.jo.quickZlearn.roadmap.entity.RoadmapStep;
 import com.jo.quickZlearn.roadmap.service.RoadmapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

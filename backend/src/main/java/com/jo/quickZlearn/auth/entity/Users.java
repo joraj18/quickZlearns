@@ -1,4 +1,4 @@
-package com.jo.quickZlearn.Auth.entity;
+package com.jo.quickZlearn.auth.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

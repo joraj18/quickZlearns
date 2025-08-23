@@ -1,4 +1,4 @@
-package com.jo.quickZlearn.ExceptionHandler;
+package com.jo.quickZlearn.exceptionhandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
