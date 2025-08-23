@@ -5,15 +5,15 @@
 ## Features
 
 - Create, publish, and explore personalized learning roadmaps.  
-- Secure **JWT-based authentication** for safe access.  
-- **Role-based access control** to manage users and permissions.  
+- Secure **JWT-based authentication** for safe access.    
 - RESTful APIs for roadmap management and user engagement.  
-- Scalable backend architecture with **Spring Boot** and **Hibernate**.  
+- Scalable backend architecture with **Spring Boot** and **Hibernate**.
+- Efficient and quick searching with **Elastic Search** .
 - Frontend built with **React** for a responsive and interactive UI.  
 
 ## Tech Stack
 
-- **Backend:** Java, Spring Boot, Hibernate  
+- **Backend Technologies:** Java, Spring Boot, Hibernate, Elastic Search  
 - **Frontend:** React  
 - **Database:** PostgreSQL  
 - **Authentication:** JWT (JSON Web Tokens)  
